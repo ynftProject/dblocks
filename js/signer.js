@@ -70,10 +70,10 @@ export default class extends view {
                         break
                     case 'asset':
                         let split = params.get(f).split(' ')
-                        let currency = 'centiDTUBE'
+                        let currency = 'centiYNFT'
                         let amount = 0
-                        if (split.length === 2 && split[1] === 'DTUBE') {
-                            currency = 'DTUBE'
+                        if (split.length === 2 && split[1] === 'YNFT') {
+                            currency = 'YNFT'
                             amount = parseFloat(split[0])
                         } else
                             amount = parseInt(split[0])
@@ -130,10 +130,10 @@ export default class extends view {
                         `<div class="input-group">
                             <input type="number" class="form-control" min="0" id="signer-field-${f}" style="max-width: 250px;">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="signer-field-${f}-asset">DTUBE</button>
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="signer-field-${f}-asset">YNFT</button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" id="signer-field-${f}-asset-DTUBE">DTUBE</a>
-                                    <a class="dropdown-item" id="signer-field-${f}-asset-centiDTUBE">centiDTUBE</a>
+                                    <a class="dropdown-item" id="signer-field-${f}-asset-YNFT">YNFT</a>
+                                    <a class="dropdown-item" id="signer-field-${f}-asset-centiYNFT">centiYNFT</a>
                                 </div>
                             </div>
                         </div>`
@@ -284,8 +284,8 @@ export default class extends view {
 
         // Asset fields
         for (let f in assetFields) {
-            $('#signer-field-'+assetFields[f]+'-asset-DTUBE').on('click',() => $('#signer-field-'+assetFields[f]+'-asset').html('DTUBE'))
-            $('#signer-field-'+assetFields[f]+'-asset-centiDTUBE').on('click',() => $('#signer-field-'+assetFields[f]+'-asset').html('centiDTUBE'))
+            $('#signer-field-'+assetFields[f]+'-asset-YNFT').on('click',() => $('#signer-field-'+assetFields[f]+'-asset').html('YNFT'))
+            $('#signer-field-'+assetFields[f]+'-asset-centiYNFT').on('click',() => $('#signer-field-'+assetFields[f]+'-asset').html('centiYNFT'))
         }
     }
 }
@@ -313,7 +313,7 @@ function constructRawTx(jsonFields) {
                 tx.data[f] = parseInt($('#signer-field-'+f).val())
                 break
             case 'asset':
-                if ($('#signer-field-'+f+'-asset').text() === 'DTUBE')
+                if ($('#signer-field-'+f+'-asset').text() === 'YNFT')
                     tx.data[f] = Math.round(parseFloat($('#signer-field-'+f).val())*100)
                 else
                     tx.data[f] = parseInt($('#signer-field-'+f).val())

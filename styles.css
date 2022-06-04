@@ -83,12 +83,14 @@ a.nav-link {
     background-color: #E31337;
 }
 
-#acc-profile-json { width: 100%; }
-#acc-profile-json table { font-size: 12px;}
+#acc-profile-json, #acc-verifydata-json { width: 100%; }
+#acc-profile-json table,
+#acc-verifydata-json table { font-size: 12px;}
 #acc-meta-master,
 #acc-leader-key,
 #acc-leader-ws,
 #acc-profile-json table tr td,
+#acc-verifydata-json table tr td,
 #blk-container table tr td,
 #txn-container table tr td {
     word-break: break-word;
@@ -121,13 +123,8 @@ table tr th {
 .content-parent, #content-comments { display: none; }
 #content-comments table,
 #content-votes thead,
-#content-votes tbody tr td:nth-child(2),
-#content-votes tbody tr td:nth-child(5),
-#content-votes tbody tr td:nth-child(6),
-#content-votes tbody tr td:nth-child(7),
-#content-votes tbody tr td:nth-child(8) { text-align: center; }
-#content-votes tbody tr td:nth-child(3),
-#content-votes tbody tr td:nth-child(4) { text-align: right; }
+#content-votes tbody tr td:nth-child(2) { text-align: center; }
+#content-votes tbody tr td:nth-child(n+3) { text-align: right; }
 
 /* Playlists */
 #playlist-error, #playlist-notfound, #playlist-container,

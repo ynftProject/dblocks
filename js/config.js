@@ -1,7 +1,9 @@
 window.config = {
-    api: 'https://api.avalonblocks.com',
-    isTestnet: false,
+    api: 'http://localhost:3001',
+    isTestnet: true,
     masterDao: 'dtube',
+    vpCapFloor: 1000000,
+    vpCapFactor: 10,
     // nextHf: {
     //     version: '1.5',
     //     codename: 'Harry Potter (Hotfix)',

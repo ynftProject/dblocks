@@ -48,15 +48,15 @@ export default class extends view {
                 <div class="input-group">
                     <input type="number" class="form-control" min="0" id="newgov-requested" style="max-width: 250px;">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="newgov-requested-asset">DTUBE</button>
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="newgov-requested-asset">YNFT</button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" id="newgov-requested-asset-DTUBE">DTUBE</a>
-                            <a class="dropdown-item" id="newgov-requested-asset-centiDTUBE">centiDTUBE</a>
+                            <a class="dropdown-item" id="newgov-requested-asset-YNFT">YNFT</a>
+                            <a class="dropdown-item" id="newgov-requested-asset-centiYNFT">centiYNFT</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <p id="newgov-fee">Fee: 100 DTUBE (refunded upon successful proposal completion)</p>
+            <p id="newgov-fee">Fee: 100 YNFT (refunded upon successful proposal completion)</p>
             <button class="btn btn-success" id="newgov-proceed">Proceed to Signer</button><br><br>
             ${toastArea('newgov-toast-area')}
         `
@@ -86,15 +86,15 @@ export default class extends view {
             }
             navigateTo(`#/signer/?type=31&title=${encodeURIComponent($('#newgov-title').val())}&description=${encodeURIComponent($('#newgov-description').val())}&url=${encodeURIComponent($('#newgov-url').val())}&receiver=${encodeURIComponent($('#newgov-receiver').val())}&requested=${encodeURIComponent($('#newgov-requested').val()+' '+$('#newgov-requested-asset').text())}&broadcast=1`)
         })
-        $('#newgov-requested-asset-DTUBE').on('click',() => $('#newgov-requested-asset').text('DTUBE'))
-        $('#newgov-requested-asset-centiDTUBE').on('click',() => $('#newgov-requested-asset').text('centiDTUBE'))
+        $('#newgov-requested-asset-YNFT').on('click',() => $('#newgov-requested-asset').text('YNFT'))
+        $('#newgov-requested-asset-centiYNFT').on('click',() => $('#newgov-requested-asset').text('centiYNFT'))
         $('#newgov-requested').on('change',() => {
             let newValue = parseFloat($('#newgov-requested').val())
             if (isNaN(newValue) || newValue <= 0)
                 return
-            if ($('#newgov-requested-asset').text() === 'DTUBE')
+            if ($('#newgov-requested-asset').text() === 'YNFT')
                 newValue = Math.round(newValue*100)
-            $('#newgov-fee').text('Fee: '+(this.creationFee(newValue)/100)+' DTUBE (refunded upon successful proposal completion)')
+            $('#newgov-fee').text('Fee: '+(this.creationFee(newValue)/100)+' YNFT (refunded upon successful proposal completion)')
         })
     }
 

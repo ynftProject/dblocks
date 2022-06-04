@@ -45,14 +45,14 @@ function jsonToTableRecursive(json,isInner) {
     return result
 }
 
-function availableBalance(account,ts) {
+function voteLocked(account,ts) {
     if (!account.voteLock)
-        return account.balance
+        return 0
     let newLock = 0
     for (let v in account.proposalVotes)
         if (account.proposalVotes[v].end > ts && account.proposalVotes[v].amount - account.proposalVotes[v].bonus > newLock)
             newLock = account.proposalVotes[v].amount - account.proposalVotes[v].bonus
-    return account.balance - newLock
+    return newLock
 }
 
 function thousandSeperator(num) {

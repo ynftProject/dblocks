@@ -110,7 +110,7 @@ export default class extends view {
             <h3 class="gov-card-title">${this.proposals[i].title ? this.proposals[i].title : '<i>Untitled Proposal</i>'}</h3>
             <p>by ${this.proposals[i].creator+(this.proposals[i].receiver?' with beneficiary '+this.proposals[i].receiver:'')}</p><br>
             <div class="progress" id="gov-progressbar-${this.proposals[i]._id}">
-                <p class="gov-card-threshold-text" id="gov-threshold-text-${this.proposals[i]._id}">Threshold:<br>${thousandSeperator((this.proposals[i].threshold || this.votingThreshold)/100)} DTUBE</p>
+                <p class="gov-card-threshold-text" id="gov-threshold-text-${this.proposals[i]._id}">Threshold:<br>${thousandSeperator((this.proposals[i].threshold || this.votingThreshold)/100)} YNFT</p>
                 <div class="progress-bar-marker" role="progressbar" id="gov-threshold-marker-${this.proposals[i]._id}"></div>
                 <div class="progress-bar bg-success" role="progressbar" style="width: ${this.proposals[i].approvals/totalWidthAmount*100}%"></div>
                 <div class="progress-bar bg-danger" role="progressbar" style="width: ${this.proposals[i].disapprovals/totalWidthAmount*100}%"></div>
@@ -141,7 +141,7 @@ export default class extends view {
     getBriefDesc(proposal) {
         switch (proposal.type) {
             case 1:
-                return 'Requested: '+thousandSeperator(proposal.requested/100)+' DTUBE'
+                return 'Requested: '+thousandSeperator(proposal.requested/100)+' YNFT'
             case 2:
                 return 'Updating: '+proposal.changes.length+' parameters'
         }

@@ -111,8 +111,8 @@ export default class extends view {
 
             votes.push(currentVote)
             let result = this.curation(rp,contentIdSplit[0],votes,distBefore)
-            $('#reward-est-result-reward').text(`Reward: ${this.floor(result.newVotes[result.newVotes.length-1].claimable/100)} DTUBE`)
-            $('#reward-est-result-fee').text(`Master Fee: ${this.floor(result.fee/100)} DTUBE`)
+            $('#reward-est-result-reward').text(`Reward: ${this.floor(result.newVotes[result.newVotes.length-1].claimable/100)} YNFT`)
+            $('#reward-est-result-fee').text(`Master Fee: ${this.floor(result.fee/100)} YNFT`)
             $('#reward-est-result-apr').text(`APR: ${Math.abs(result.newVotes[result.newVotes.length-1].claimable*365*24/vp).toFixed(2)}%`)
             $('#reward-est-result').show()
             console.log(result)

@@ -44,8 +44,22 @@ class GrowInt {
 }
 
 // From javalon
-function votingPower(account) {
-    return new GrowInt(account.vt, {growth:account.balance/360000000, max: account.maxVt}).grow(new Date().getTime()).v
+function votingPower(account, avgs) {
+    let totalVp = 0n
+    let count = 1n
+    if (avgs && avgs.tvap) {
+        if (avgs.tvap.total)
+            totalVp = BigInt(avgs.tvap.total)
+        if (avgs.tvap.count)
+            count = BigInt(avgs.tvap.count)
+    }
+    return new GrowInt(account.vt, {
+        growth:account.balance/360000000,
+        max: Math.min(
+            account.maxVt || Number.MAX_SAFE_INTEGER,
+            Math.max(window.config.vpCapFloor, Number(BigInt(window.config.vpCapFactor)*totalVp/count))
+        )
+    }).grow(new Date().getTime()).v
 }
 
 function bandwidth(account) {

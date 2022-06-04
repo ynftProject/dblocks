@@ -3,7 +3,9 @@ const TransactionTypes = {
         name: 'NEW_ACCOUNT',
         fields: {
             name: 'accountName',
-            pub: 'publicKey'
+            pub: 'publicKey',
+            bw: 'integer',
+            ref: 'accountName'
         }
     },
     1: {
@@ -32,18 +34,15 @@ const TransactionTypes = {
             link: 'string',
             pa: 'accountName',
             pp: 'string',
-            json: 'json',
-            vt: 'integer',
-            tag: 'string'
+            json: 'json'
         }
     },
     5: {
         name: 'VOTE',
         fields: {
-            link: 'string',
             author: 'accountName',
-            vt: 'integer',
-            tag: 'string'
+            link: 'string',
+            downvote: 'boolean'
         }
     },
     6: {
@@ -64,83 +63,8 @@ const TransactionTypes = {
             target: 'accountName'
         }
     },
-    10: {
+    9: {
         name: 'NEW_KEY',
-        fields: {
-            id: 'string',
-            pub: 'publicKey',
-            types: 'array'
-        }
-    },
-    11: {
-        name: 'REMOVE_KEY',
-        fields: {
-            id: 'string'
-        }
-    },
-    12: {
-        name: 'CHANGE_PASSWORD',
-        fields: {
-            pub: 'publicKey'
-        }
-    },
-    13: {
-        name: 'PROMOTED_COMMENT',
-        fields: {
-            link: 'string', 
-            pa: 'accountName', 
-            pp: 'string', 
-            json: 'json', 
-            vt: 'integer', 
-            tag: 'string', 
-            burn: 'asset'
-        }
-    },
-    14: {
-        name: 'TRANSFER_VT',
-        fields: {
-            receiver: 'accountName',
-            amount: 'integer'
-        }
-    },
-    15: {
-        name: 'TRANSFER_BW',
-        fields: {
-            receiver: 'accountName',
-            amount: 'integer'
-        }
-    },
-    16: {
-        name: 'LIMIT_VT',
-        fields: {
-            amount: 'integer'
-        }
-    },
-    17: {
-        name: 'CLAIM_REWARD',
-        fields: {
-            link: 'string',
-            author: 'accountName'
-        }
-    },
-    18: {
-        name: 'ENABLE_NODE',
-        fields: {
-            pub: 'publicKey'
-        }
-    },
-    19: {
-        name: 'TIPPED_VOTE',
-        fields: {
-            link: 'string',
-            author: 'accountName',
-            vt: 'integer',
-            tag: 'string',
-            tip: 'integer'
-        }
-    },
-    20: {
-        name: 'NEW_WEIGHTED_KEY',
         fields: {
             id: 'string',
             pub: 'publicKey',
@@ -148,30 +72,87 @@ const TransactionTypes = {
             weight: 'integer'
         }
     },
-    21: {
+    10: {
+        name: 'REMOVE_KEY',
+        fields: {
+            id: 'string'
+        }
+    },
+    11: {
+        name: 'CHANGE_PASSWORD',
+        fields: {
+            pub: 'publicKey'
+        }
+    },
+    12: {
+        name: 'TRANSFER_BW',
+        fields: {
+            receiver: 'accountName',
+            amount: 'integer'
+        }
+    },
+    13: {
+        name: 'LIMIT_VT',
+        fields: {
+            amount: 'integer'
+        }
+    },
+    14: {
+        name: 'ENABLE_NODE',
+        fields: {
+            pub: 'publicKey'
+        }
+    },
+    15: {
+        name: 'TRANSFER_NFT',
+        fields: {
+            author: 'accountName',
+            link: 'string',
+            receiver: 'accountName',
+            memo: 'string'
+        }
+    },
+    16: {
+        name: 'NFT_ORDER_CREATE',
+        fields: {
+            author:  'accountName',
+            link: 'string',
+            price: 'asset',
+            exp: 'integer'
+        }
+    },
+    17: {
+        name: 'NFT_ORDER_CANCEL',
+        fields: {
+            author:  'accountName',
+            link: 'string'
+        }
+    },
+    18: {
+        name: 'NFT_ORDER_MATCH',
+        fields: {
+            author:  'accountName',
+            link: 'string',
+            target: 'accountName',
+            price: 'asset'
+        }
+    },
+    22: {
         name: 'SET_SIG_THRESHOLD',
         fields: {
             thresholds: 'json'
         }
     },
-    22: {
+    23: {
         name: 'SET_PASSWORD_WEIGHT',
         fields: {
             weight: 'integer'
         }
     },
-    23: {
+    24: {
         name: 'UNSET_SIG_THRESHOLD',
         fields: {
             types: 'array'
-        }
-    },
-    24: {
-        name: 'NEW_ACCOUNT_WITH_BW',
-        fields: {
-            name: 'accountName',
-            pub: 'publicKey',
-            bw: 'integer'
         }
     },
     25: {
@@ -287,7 +268,100 @@ const TransactionTypes = {
         fields: {
             id: 'integer',
         }
+    },
+    40: {
+        name: 'NFT_AUCTION_CREATE',
+        fields: {
+            author:  'accountName',
+            link: 'string',
+            price: 'asset',
+            end: 'integer'
+        }
+    },
+    41: {
+        name: 'NFT_AUCTION_BID',
+        fields: {
+            author:  'accountName',
+            link: 'string',
+            price: 'asset'
+        }
+    },
+    42: {
+        name: 'VERIFY_REQUEST',
+        fields: {
+            json: 'json'
+        }
+    },
+    43: {
+        name: 'VERIFY_RESPONSE',
+        fields: {
+            target: 'accountName',
+            approve: 'boolean'
+        }
+    },
+    44: {
+        name: 'TOKEN_MINT',
+        fields: {
+            symbol: 'string',
+            amount: 'integer',
+            receiver: 'accountName'
+        }
+    },
+    45: {
+        name: 'TOKEN_TRANSFER',
+        fields: {
+            symbol: 'string',
+            amount: 'integer',
+            receiver: 'accountName',
+            memo: 'string'
+        }
+    },
+    46: {
+        name: 'AMM_ADD_LIQUIDITY',
+        fields: {
+            tokenSymbol: 'string',
+            tokenAmount: 'integer',
+            ynftAmount: 'asset',
+            minOut: 'integer'
+        }
+    },
+    47: {
+        name: 'AMM_REMOVE_LIQUIDITY',
+        fields: {
+            tokenSymbol: 'string',
+            lpAmount: 'integer',
+            tokenOutMin: 'integer',
+            ynftOutMin: 'asset'
+        }
+    },
+    48: {
+        name: 'AMM_SWAP_EXACT',
+        fields: {
+            tokenInSymbol: 'string',
+            tokenInAmount: 'integer',
+            tokenOutSymbol: 'string',
+            tokenOutMin: 'integer',
+        }
+    },
+    49: {
+        name: 'AMM_SWAP_FOR_EXACT',
+        fields: {
+            tokenInSymbol: 'string',
+            tokenInMax: 'integer',
+            tokenOutSymbol: 'string',
+            tokenOutAmount: 'integer',
+        }
     }
+}
+
+const tokens = {
+    GC: { decimals: 2 },
+    GCLocked: { decimals: 2 },
+    YNFT: { decimals: 2 }
+}
+
+function assetToString(amount, asset, excludeAsset = false) {
+    return thousandSeperator(Number(amount)/Math.pow(10,tokens[asset] ? tokens[asset].decimals || 0 : 0)) + (!excludeAsset ? (' ' + asset) : '')
 }
 
 function txCardsHtml(txs = []) {
@@ -305,13 +379,13 @@ function txToHtml(tx) {
     let result = aUser(tx.sender)
     switch (tx.type) {
         case 0:
-            return result + ' created new account ' + aUser(tx.data.name)
+            return result + ' created new account ' + aUser(tx.data.name) + ' with ' + thousandSeperator(tx.data.bw) + ' bytes'
         case 1:
             return result + ' approved leader ' + aUser(tx.data.target)
         case 2:
             return result + ' disapproved leader ' + aUser(tx.data.target)
         case 3:
-            result = result + ' transferred ' + thousandSeperator(tx.data.amount / 100) + ' DTUBE to ' + aUser(tx.data.receiver)
+            result = result + ' transferred ' + thousandSeperator(tx.data.amount / 100) + ' YNFT to ' + aUser(tx.data.receiver)
             if (tx.data.memo)
                 result += ', memo: ' + tx.data.memo
             return result
@@ -322,13 +396,11 @@ function txToHtml(tx) {
                 result += ' posted a new video ' + aContent(tx.sender + '/' + tx.data.link)
             return result
         case 5:
-            if (tx.data.vt > 0)
+            if (!tx.data.downvote)
                 result += ' upvoted '
             else
                 result += ' downvoted '
-            result += aContent(tx.data.author + '/' + tx.data.link) + ' with ' + thousandSeperator(tx.data.vt) + ' VP'
-            if (tx.data.tag)
-                result += ' and tagged it with ' + tx.data.tag
+            result += aContent(tx.data.author + '/' + tx.data.link) + ' with ' + thousandSeperator(tx.event.vp) + ' VP'
             return result
         case 6:
             return result + ' update profile'
@@ -336,49 +408,35 @@ function txToHtml(tx) {
             return result + ' subscribed to ' + aUser(tx.data.target)
         case 8:
             return result + ' unsubscribed to ' + aUser(tx.data.target)
-        case 10:
-            return result + ' created a custom key with id ' + tx.data.id
-        case 11:
-            return result + ' removed a custom key with id ' + tx.data.id
-        case 12:
-            return result + ' changed the master key'
-        case 13:
-            if (tx.data.pa && tx.data.pp)
-                result += ' commented on ' + aContent(tx.data.pa + '/' + tx.data.pp)
-            else
-                result += ' posted a new video ' + aContent(tx.sender + '/' + tx.data.link)
-            result += ' and burnt ' + (tx.data.burn / 100) + ' DTUBE '
-            return result
-        case 14:
-            return result + ' transferred ' + thousandSeperator(tx.data.amount) + ' VP to ' + aUser(tx.data.receiver)
-        case 15:
-            return result + ' transferred ' + thousandSeperator(tx.data.amount) + ' bytes to ' + aUser(tx.data.receiver)
-        case 16:
-            return result + ' set a limit on account voting power to ' + tx.data.amount + ' VP'
-        case 17:
-            return result + ' claimed curation rewards on ' + aContent(tx.data.author + '/' + tx.data.link)
-        case 18:
-            return result + ' updated leader key for block production'
-        case 19:
-            if (tx.data.vt > 0)
-                result += ' upvoted '
-            else
-                result += ' downvoted '
-            result += aContent(tx.data.author + '/' + tx.data.link) + ' with ' + thousandSeperator(tx.data.vt) + ' VP'
-            if (tx.data.tag)
-                result += ' and tagged it with ' + tx.data.tag
-            result += ' (' + tx.data.tip + '% author tip)'
-            return result
-        case 20:
+        case 9:
             return result + ' created a custom key with id ' + tx.data.id + ' and weight ' + tx.data.weight
+        case 10:
+            return result + ' removed a custom key with id ' + tx.data.id
+        case 11:
+            return result + ' changed the master key'
+        case 12:
+            return result + ' transferred ' + thousandSeperator(tx.data.amount) + ' bytes to ' + aUser(tx.data.receiver)
+        case 13:
+            return result + ' set a limit on account voting power to ' + tx.data.amount + ' VP'
+        case 14:
+            return result + ' updated leader key for block production'
+        case 15:
+            result += ' transferred ' + aContent(tx.data.author+'/'+tx.data.link) + ' to ' + aUser(tx.data.receiver)
+            if (tx.data.memo)
+                result += ', memo: ' + tx.data.memo
+            return result
+        case 16:
+            return result + ' created ' + tx.event.side + ' order on ' + aContent(tx.data.author+'/'+tx.data.link) + ' for ' + thousandSeperator(tx.data.price/100) + ' YNFT'
+        case 17:
+            return result + ' cancelled order for ' + aContent(tx.data.author+'/'+tx.data.link)
+        case 18:
+            return result + ' market ' + tx.event.side + ' ' + aContent(tx.data.author+'/'+tx.data.link) + ' for ' + thousandSeperator(tx.event.price/100) + ' YNFT'
         case 21:
             return result + ' set signature thresholds'
-        case 22:
-            return result + ' set master key weight to ' + tx.data.weight
         case 23:
-            return result + ' unset signature thresholds'
+            return result + ' set master key weight to ' + tx.data.weight
         case 24:
-            return result + ' created new account ' + aUser(tx.data.name) + ' with ' + thousandSeperator(tx.data.bw) + ' bytes'
+            return result + ' unset signature thresholds'
         case 25:
             return result + ' set playlist metadata for ' + aPlaylist(tx.sender + '/' + tx.data.link)
         case 26:
@@ -392,15 +450,15 @@ function txToHtml(tx) {
         case 30:
             return result + ' revoked '+aUser(tx.data.user)+' with id '+tx.data.id
         case 31:
-            return result + ' created a fund request of ' + thousandSeperator(tx.data.requested/100) + ' DTUBE with receiver ' + aUser(tx.data.receiver)
+            return result + ' created a fund request of ' + thousandSeperator(tx.data.requested/100) + ' YNFT with receiver ' + aUser(tx.data.receiver)
         case 32:
-            return result + ' contributed ' + thousandSeperator(tx.data.amount/100) + ' DTUBE to fund request ID #' + tx.data.id
+            return result + ' contributed ' + thousandSeperator(tx.data.amount/100) + ' YNFT to fund request ID #' + tx.data.id
         case 33:
             return result + ' submitted work for fund request ID #' + tx.data.id
         case 34:
             return result + (tx.data.approve ? ' approved' : ' disapproved') + ' work for fund request ID #' + tx.data.id + ' with memo ' + tx.data.memo
         case 35:
-            return result + (tx.data.amount > 0 ? ' approved' : ' disapproved') + ' proposal ID #' + tx.data.id + ' with vote weight of ' + thousandSeperator(Math.abs(tx.data.amount/100)) + ' DTUBE'
+            return result + (tx.data.amount > 0 ? ' approved' : ' disapproved') + ' proposal ID #' + tx.data.id + ' with vote weight of ' + thousandSeperator(Math.abs(tx.data.amount/100)) + ' YNFT'
         case 36:
             return result + ' edited proposal ID #' + tx.data.id
         case 37:
@@ -409,6 +467,34 @@ function txToHtml(tx) {
             return result + ' queued transaction type ' + tx.data.txtype + ' in master DAO'
         case 39:
             return result + ' approved master DAO transaction #' + tx.data.id
+        case 40:
+            return result + ' created an auction on ' + aContent(tx.data.author+'/'+tx.data.link) + ' with minimum bid of ' + thousandSeperator(tx.data.price/100) + ' YNFT'
+        case 41:
+            return result + ' bid in an auction on ' + aContent(tx.data.author+'/'+tx.data.link) + ' with bid price of ' + thousandSeperator(tx.data.price/100) + ' YNFT'
+        case 42:
+            return result + ' created verify request'
+        case 43:
+            if (tx.data.approve)
+                result += ' approved verify request with approval level ' + tx.data.approve
+            else
+                result += ' disapproved verify request'
+            result += ' for ' + aUser(tx.data.target)
+            return result
+        case 44:
+            return result += ' mint ' + thousandSeperator(tx.data.amount/Math.pow(10,tokens[tx.data.symbol].decimals || 0)) + ' ' + tx.data.symbol + ' tokens with receiver ' + aUser(tx.data.receiver)
+        case 45:
+            result += ' transferred ' + thousandSeperator(tx.data.amount/Math.pow(10,tokens[tx.data.symbol].decimals || 0)) + ' ' + tx.data.symbol + ' tokens to ' + aUser(tx.data.receiver)
+            if (tx.data.memo)
+                result += ', memo: ' + tx.data.memo
+            return result
+        case 46:
+            return result + ' add ' + assetToString(tx.event.ynftIn, 'YNFT') + ' and ' + assetToString( tx.event.tokenIn, tx.data.tokenSymbol) + ' liquidity'
+        case 47:
+            return result + ' remove ' + assetToString(tx.event.ynftOut, 'YNFT') + ' and ' + assetToString(tx.event.tokenOut, tx.data.tokenSymbol) + ' liquidity'
+        case 48:
+            return result + ' swap exactly ' + assetToString(tx.data.tokenInAmount, tx.data.tokenInSymbol) + ' for ' + assetToString(tx.event.tokenOutAmount, tx.data.tokenOutSymbol)
+        case 49:
+            return result + ' swap ' + assetToString(tx.event.tokenInAmount, tx.data.tokenInSymbol) + ' for ' + assetToString(tx.data.tokenOutAmount, tx.data.tokenOutSymbol)
         default:
             return 'Unknown transaction type ' + tx.type
     }

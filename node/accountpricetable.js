@@ -27,7 +27,7 @@ let result = ''
 
 for (let i = config.accountMinLength; i <= config.accountMaxLength; i++) {
     let price = accountPrice(i)
-    result += '<tr><th scope="row">'+i+'</th><td>'+thousandSeperator((price/100).toFixed(2))+' DTUBE</td><td>'+thousandSeperator(price*config.vtPerBurn)+' VP</td><td>'+thousandSeperator(Math.floor(price*config.bwPerBurnHour))+' bytes/hour</td></tr>\n'
+    result += '<tr><th scope="row">'+i+'</th><td>'+thousandSeperator((price/100).toFixed(2))+' YNFT</td><td>'+thousandSeperator(price*config.vtPerBurn)+' VP</td><td>'+thousandSeperator(Math.floor(price*config.bwPerBurnHour))+' bytes/hour</td></tr>\n'
 }
 
 console.log(result)

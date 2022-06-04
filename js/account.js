@@ -28,22 +28,33 @@ export default class extends view {
                         <table class="table table-sm">
                             <tr><th scope="row">Balance</th><td id="acc-meta-bal"></td></tr>
                             <tr><th scope="row">Vote Locked</th><td id="acc-meta-votelock"></td></tr>
+                            <tr><th scope="row">Earnings Locked</th><td id="acc-meta-earninglock"></td></tr>
                             <tr><th scope="row">Bandwidth</th><td id="acc-meta-bw"></td></tr>
                             <tr><th scope="row">Voting Power</th><td id="acc-meta-vp"></td></tr>
+                            <tr><th scope="row">Verification</th><td id="acc-meta-verifiedlvl"></td></tr>
                             <tr><th scope="row">Subscribers</th><td id="acc-meta-subs"></td></tr>
                             <tr><th scope="row">Subscribed To</th><td id="acc-meta-subbed"></td></tr>
-                            <tr><th scope="row">Pending Rewards</th><td id="acc-meta-pending">Loading...</td></tr>
-                            <tr><th scope="row">Claimable Rewards</th><td id="acc-meta-claimable">Loading...</td></tr>
-                            <tr><th scope="row">Claimed Rewards</th><td id="acc-meta-claimed">Loading...</td></tr>
-                            <tr><th scope="row">Curation APR (30d)</th><td id="acc-meta-curation-apr-30d">Loading...</td></tr>
+                            <tr><th scope="row">Total Earnings</th><td id="acc-meta-total-earnings"></td></tr>
                         </table>
                         <a type="button" target="_blank" class="btn btn-primary btn-block" id="acc-profile-dtube"><img src="icons/DTube_White.png">View channel on DTube</a>
                         <a type="button" target="_blank" class="btn btn-primary btn-block" id="acc-profile-hive"><img src="icons/Hive_White.png">View blog on Hive</a>
                         ${flairs[this.account] === 'Master' ? '<a type="button" href="#/masterdao" class="btn btn-success btn-block acc-masterdao-btn">View MasterDAO</a>' : ''}
                         <h6><br></h6>
+                        <div id="acc-tokens">
+                            <h4>Tokens</h4>
+                            <table class="table table-sm">
+                                <tr><th scope="row">GC</th><td id="acc-token-gc"></td></tr>
+                                <tr><th scope="row">GC Locked</th><td id="acc-token-gclock"></td></tr>
+                                <tr><th scope="row">YNFT-GC-LP</th><td id="acc-token-ynft-gc-lp"></td></tr>
+                            </table>
+                        </div>
                         <div id="acc-profile-metadata">
                             <h4>Metadata</h4>
                             <div id="acc-profile-json"></div>
+                        </div>
+                        <div id="acc-verifydata">
+                            <h4>Verification Data</h4>
+                            <div id="acc-verifydata-json"></div>
                         </div>
                         <h4>Public Keys</h4>
                         <div class="accordion" id="acc-customkey">
@@ -135,6 +146,8 @@ export default class extends view {
             } else {
                 accCreatedStr += 'dtube on ' + new Date(1593350655283).toLocaleString() // timestamp of block #1 on testnet v2
             }
+            if (acc.data.ref)
+                accCreatedStr += ' with referrer ' + acc.data.ref
             $('#acc-meta-created').text(accCreatedStr)
 
             if (acc.data.json)
@@ -142,22 +155,32 @@ export default class extends view {
             else
                 $('#acc-profile-metadata').hide()
 
+            if (acc.data.verifyData)
+                $('#acc-verifydata-json').html(jsonToTableRecursive(acc.data.verifyData))
+            else
+                $('#acc-verifydata').hide()
+
             axios.get(config.api+'/rewards/pending/' + this.account).then((pending) =>
-                $('#acc-meta-pending').text(thousandSeperator(Math.floor(pending.data.total) / 100) + ' DTUBE'))
+                $('#acc-meta-pending').text(thousandSeperator(Math.floor(pending.data.total) / 100) + ' YNFT'))
             .catch(()=>
                 $('#acc-meta-pending').text('Error'))
 
             axios.get(config.api+'/rewards/claimable/' + this.account).then((claimable) =>
-                $('#acc-meta-claimable').text(thousandSeperator(Math.floor(claimable.data.total) / 100) + ' DTUBE'))
+                $('#acc-meta-claimable').text(thousandSeperator(Math.floor(claimable.data.total) / 100) + ' YNFT'))
             .catch(()=>
                 $('#acc-meta-claimable').text('Error'))
     
             axios.get(config.api + '/rewards/claimed/' + this.account).then((claimed) =>
-                $('#acc-meta-claimed').text(thousandSeperator(Math.floor(claimed.data.total) / 100) + ' DTUBE'))
+                $('#acc-meta-claimed').text(thousandSeperator(Math.floor(claimed.data.total) / 100) + ' YNFT'))
             .catch(()=>
                 $('#acc-meta-claimed').text('Error'))
 
-            this.loadCurationApr('acc-meta-curation-apr-30d')
+            axios.get(config.api + '/averages').then((avgs) => {
+                this.avgs = avgs.data
+                this.updateVP(acc.data, this.avgs)
+            }).catch(()=>
+                $('#acc-meta-vp').text('Error'))
+
             this.updateAccount(acc.data)
             this.display()
             intervals.push(setInterval(()=>this.reloadAccount((newacc)=>this.updateAccount(newacc)),10000))
@@ -222,54 +245,35 @@ export default class extends view {
     }
 
     updateAccount(acc) {
-        $('#acc-meta-bal').text(thousandSeperator(acc.balance / 100) + ' DTUBE')
-        $('#acc-meta-votelock').text(thousandSeperator((acc.balance - availableBalance(acc,new Date().getTime())) / 100) + ' DTUBE')
+        $('#acc-meta-bal').text(thousandSeperator(acc.balance / 100) + ' YNFT')
+        $('#acc-meta-votelock').text(thousandSeperator(voteLocked(acc,new Date().getTime()) / 100) + ' YNFT')
+        $('#acc-meta-earninglock').text(thousandSeperator(acc.earningLock / 100) + ' YNFT')
         $('#acc-meta-bw').text(thousandSeperator(bandwidth(acc)) + ' bytes')
-        $('#acc-meta-vp').text(thousandSeperator(votingPower(acc)) + ' VP')
+        $('#acc-meta-verifiedlvl').text(acc.verified || 0)
         $('#acc-meta-subs').text(thousandSeperator(acc.followers.length))
         $('#acc-meta-subbed').text(thousandSeperator(acc.follows.length))
         $('#acc-meta-approves').html(this.leaderVotesHtml(acc.approves))
+        $('#acc-meta-total-earnings').text(assetToString(acc.earnings, 'YNFT'))
         $('#acc-thresholds').html(this.sigThresholdsTableHtml(acc.thresholds))
     
         if (acc.pub_leader) {
             this.updateLeaderStats()
             $('#acc-leader').show()
             $('#acc-leader-key').text(acc.pub_leader)
-            $('#acc-leader-appr').text(thousandSeperator(acc.node_appr / 100) + ' DTUBE')
+            $('#acc-leader-appr').text(thousandSeperator(acc.node_appr / 100) + ' YNFT')
     
             if (acc.json && acc.json.node && acc.json.node.ws)
                 $('#acc-leader-ws').text(DOMPurify.sanitize(acc.json.node.ws))
             else
                 $('#acc-leader-ws').text('N/A')
         }
+        this.updateVP(acc, this.avgs)
+        this.renderTokens(acc)
         addAnchorClickListener()
     }
 
-    loadCurationApr(displayId = '', ts = 0, vt = 0, payout = 0, period = 2592000000) {
-        axios.get(config.api+'/votes/'+this.account+'/'+ts).then((v) => {
-            let i = 0
-            while (i < v.data.length && v.data[i].ts > new Date().getTime() - period) {
-                // only count non-self votes
-                if (v.data[i].author !== this.account) {
-                    vt += Math.abs(v.data[i].vt)
-                    payout += Math.floor(v.data[i].claimable)
-                }
-                i++
-            }
-            let lastVote = v.data[v.data.length-1]
-            if (lastVote.ts < new Date().getTime() - period || (lastVote.ts > ts && ts !== 0) || v.data.length < 50)
-                this.displayCurationApr(vt,payout,displayId)
-            else
-                this.loadCurationApr(displayId,lastVote.contentTs,vt,payout)
-        }).catch(() => $('#'+displayId).text('Error'))
-    }
-
-    displayCurationApr(vt = 0, payout = 0, displayId = '') {
-        console.log('totals',vt,payout)
-        if (vt === 0)
-            $('#'+displayId).text('0%')
-        else
-            $('#'+displayId).text(thousandSeperator(Math.abs(payout*365*24/vt).toFixed(2))+'%')
+    updateVP(acc, avgs) {
+        $('#acc-meta-vp').text(thousandSeperator(votingPower(acc,avgs)) + ' VP')
     }
 
     display() {
@@ -279,6 +283,12 @@ export default class extends view {
             $('#acc-container').show()
             addAnchorClickListener()
         }
+    }
+
+    renderTokens(acc) {
+        $('#acc-token-gc').text(assetToString(acc.tokenGC || 0, 'GC', true))
+        $('#acc-token-gclock').text(assetToString(acc.tokenGCLock || 0, 'GCLock', true))
+        $('#acc-token-ynft-gc-lp').text(assetToString(acc['tokenYNFT-GC-LP'] || 0, 'YNFT-GC-LP', true))
     }
 
     customKeyHtml(keys) {

@@ -79,7 +79,7 @@ export default class extends view {
                 </tr></thead>
                 <tbody id="newgov-changes"></tbody>
             </table>
-            <p id="newgov-fee">Fee: 300 DTUBE (refunded upon successful execution)</p>
+            <p id="newgov-fee">Fee: 300 YNFT (refunded upon successful execution)</p>
             <button class="btn btn-success" id="newgov-proceed">Proceed to Signer</button><br><br>
             ${toastArea('newgov-toast-area')}
         `

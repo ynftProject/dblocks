@@ -78,18 +78,19 @@ export default class extends view {
             }
     
             // List transactions
-            if (blk.data.txs.length > 0) {
-                if (isPuralArr(blk.data.txs))
-                    $('#blk-txs-heading').text(blk.data.txs.length + ' transactions in this block')
-                else
-                    $('#blk-txs-heading').text('1 transaction in this block')
-                $('#blk-txs').append(txCardsHtml(blk.data.txs))
-            }
-    
-            addAnchorClickListener()
-            $('#blk-loading').hide()
-            $('.spinner-border').hide()
-            $('#blk-container').show()
+            axios.get(config.api+'/blocktxs/'+this.blockNum).then((txs) => {
+                if (txs.data && txs.data.length > 0) {
+                    if (isPuralArr(txs.data))
+                        $('#blk-txs-heading').text(txs.data.length + ' transactions in this block')
+                    else
+                        $('#blk-txs-heading').text('1 transaction in this block')
+                    $('#blk-txs').append(txCardsHtml(txs.data))
+                }
+                addAnchorClickListener()
+                $('#blk-loading').hide()
+                $('.spinner-border').hide()
+                $('#blk-container').show()
+            })
         }).catch((e) => {
             $('#blk-loading').hide()
             $('.spinner-border').hide()
