@@ -40,6 +40,17 @@ export default class extends view {
                         <tr><th scope="row">Burned</th><td id="rp-burn">Loading...</td></tr>
                         <tr><th scope="row">Votes Spent</th><td id="rp-votes">Loading...</td></tr>
                     </table><br>
+                    <h3>Distribution Pool</h3>
+                    <table class="table table-sm">
+                        <tr><th scope="row">Average VP</th><td id="dp-tvap">Loading...</td></tr>
+                        <tr><th scope="row">Average Earnings</th><td id="dp-earnings">Loading...</td></tr>
+                        <tr><th scope="row">Current Total</th><td id="dp-current-total">Loading...</td></tr>
+                        <tr><th scope="row">Current Accounts</th><td id="dp-current-acc">Loading...</td></tr>
+                        <tr><th scope="row">Previous Total</th><td id="dp-previous-total">Loading...</td></tr>
+                        <tr><th scope="row">Previous Accounts</th><td id="dp-previous-acc">Loading...</td></tr>
+                        <tr><th scope="row">Last Cycle</th><td id="dp-ts">Loading...</td></tr>
+                        <tr><th scope="row">Claimed</th><td id="dp-claimed">Loading...</td></tr>
+                    </table><br>
                     <h3>Chain Properties</h3>
                     <table class="table table-sm" id="dblocks-props-tbl"><tbody>
                         <tr><th scope="row">Chain ID</th><td>da5fe18d0844f1f97bf5a94e7780dec18b4ab015e32383ede77158e059bacbb2</td></tr>
@@ -134,6 +145,17 @@ export default class extends view {
             $('#rp-avail').text(thousandSeperator(Math.ceil(rpRes.data.avail) / 100) + ' YNFT')
             $('#rp-burn').text(thousandSeperator(Math.ceil(rpRes.data.burn) / 100) + ' YNFT')
             $('#rp-votes').text(thousandSeperator(Math.ceil(rpRes.data.votes)) + ' VP')
+        })
+
+        axios.get(config.api + '/averages').then((avgRes) => {
+            $('#dp-tvap').text((BigInt(avgRes.data.tvap.total)/BigInt(avgRes.data.tvap.count)).toLocaleString()+' VP')
+            $('#dp-earnings').text(assetToString(Number(BigInt(avgRes.data.earning.total)/BigInt(avgRes.data.earning.count)),'YNFT'))
+            $('#dp-current-total').text(assetToString(avgRes.data.currentDistPool.total,'YNFT'))
+            $('#dp-current-acc').text(avgRes.data.currentDistPool.accounts)
+            $('#dp-previous-total').text(assetToString(avgRes.data.previousDistPool.total,'YNFT'))
+            $('#dp-previous-acc').text(avgRes.data.previousDistPool.accounts)
+            $('#dp-ts').text(new Date(avgRes.data.previousDistPool.ts).toLocaleString())
+            $('#dp-claimed').text(assetToString(avgRes.data.previousDistPool.claimed,'YNFT'))
         })
     }
 

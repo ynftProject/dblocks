@@ -31,7 +31,7 @@ export default class extends view {
                                 ${(() => {
                                     let result = ''
                                     for (let g in ChainParamsGroups)
-                                        result += 'Group '+g+': '+listWords(ChainParamsGroups[g])
+                                        result += 'Group '+g+': '+listWords(ChainParamsGroups[g])+'<br>'
                                     return result
                                 })()}
                             </div>

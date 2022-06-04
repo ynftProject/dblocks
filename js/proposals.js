@@ -38,24 +38,28 @@ const ChainParams = [
     'accountPriceMin',
 
     // economy
-    'ecoStartRent',
-    'ecoBaseRent',
-    'ecoDvRentFactor',
-    'ecoPunishPercent',
-    'ecoRentStartTime',
-    'ecoRentEndTime',
-    'ecoClaimTime',
+    'ecoAuthorReward',
+    'ecoCurationReward',
+    'ecoMasterFee',
+    'ecoAuthorRewardOwning',
+    'ecoCurationRewardOwning',
+    'ecoMasterFeeOwning',
 
     // reward pool
     'rewardPoolMaxShare',
     'rewardPoolAmount',
 
     // misc
-    'masterFee',
     'masterDaoTxExp',
-    'vtPerBurn',
-    'preloadVt',
     'preloadBwGrowth',
+    'vpCapFactor',
+    'vpCapFloor',
+    'earningLimitFactorPEL',
+    'earningLimitFactorRPEL',
+    'earningLimitFloor',
+    'earningLockNftPremium',
+    'distPoolCycle',
+    'ammFee',
 
     // dao
     'daoVotingPeriodSeconds',
@@ -70,11 +74,19 @@ const ChainParams = [
     'fundRequestContribPeriodSeconds',
     'fundRequestDeadlineSeconds',
     'fundRequestDeadlineExtSeconds',
-    'fundRequestReviewPeriodSeconds'
+    'fundRequestReviewPeriodSeconds',
+
+    // nft
+    'nftSaleFee',
+    'nftFloorPrice',
+    'nftMaxExpSeconds',
+    'nftMaxBids'
 ]
 
 const ChainParamsGroups = {
-    ecoRentTimes: ['ecoRentStartTime','ecoRentEndTime','ecoClaimTime']
+    ose: ['ecoAuthorReward','ecoCurationReward','ecoMasterFee'],
+    tse: ['ecoAuthorRewardOwning','ecoCurationRewardOwning','ecoMasterFeeOwning'],
+    earnLimit: ['earningLimitFactorPEL','earningLimitFactorRPEL']
 }
 
 function getTimeText(proposal) {
