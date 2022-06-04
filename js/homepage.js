@@ -27,9 +27,10 @@ export default class extends view {
                     ${!config.isTestnet ? this.marketInfoHtml() : ''}
                     <h3>Supply Info</h3>
                     <table class="table table-sm">
-                        <tr><th scope="row">Circulating</th><td id="supply-circulating">Loading...</td></tr>
-                        <tr><th scope="row">Unclaimed</th><td id="supply-unclaimed">Loading...</td></tr>
-                        <tr><th scope="row">Total</th><td id="supply-total">Loading...</td></tr>
+                        <tr><th scope="row">YNFT</th><td id="supply-ynft"></td></tr>
+                        <tr><th scope="row">GC</th><td id="supply-gc">Loading...</td></tr>
+                        <tr><th scope="row">Locked GC</th><td id="supply-locked-gc">Loading...</td></tr>
+                        <tr><th scope="row">YNFT-GC-LP</th><td id="supply-ynft-gc-lp">Loading...</td></tr>
                     </table><br>
                     <h3>Reward Pool</h3>
                     <table class="table table-sm">
@@ -131,10 +132,11 @@ export default class extends view {
 
     updateChainInfo() {
         axios.get(config.api + '/supply').then((supplyRes) => {
-            this.circulatingSupply = supplyRes.data.circulating
-            $('#supply-circulating').text(thousandSeperator(supplyRes.data.circulating / 100) + ' YNFT')
-            $('#supply-unclaimed').text(thousandSeperator(Math.ceil(supplyRes.data.unclaimed) / 100) + ' YNFT')
-            $('#supply-total').text(thousandSeperator(Math.ceil(supplyRes.data.total) / 100) + ' YNFT')
+            this.circulatingSupply = supplyRes.data.ynft
+            $('#supply-ynft').text(assetToString(supplyRes.data.ynft,'YNFT'))
+            $('#supply-gc').text(assetToString(supplyRes.data.GC,'GC'))
+            $('#supply-locked-gc').text(assetToString(supplyRes.data.GCLock,'GC'))
+            $('#supply-ynft-gc-lp').text(assetToString(supplyRes.data['YNFT-GC-LP'],'YNFT-GC-LP'))
             if (!config.isTestnet && !isNaN(this.priceBTC) && !isNaN(this.priceUSD) && !isNaN(this.circulatingSupply))
                 $('#market-cap-usd').text('$'+thousandSeperator(Math.ceil(this.priceUSD*this.circulatingSupply)/100))
         })
