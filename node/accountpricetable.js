@@ -1,12 +1,12 @@
 const config = {
-    accountPriceBase: 20000,
+    accountPriceBase: 200000000,
     accountPriceCharMult: 4,
     accountPriceChars: 5,
-    accountPriceMin: 200,
+    accountPriceMin: 2000000,
     accountMaxLength: 50,
     accountMinLength: 1,
-    vtPerBurn: 22,
-    bwPerBurnHour: 0.05
+    vtPerBurn: 0.0022,
+    bwPerBurnHour: 0.000005
 }
 
 const accountPrice = (length = 1) => {
@@ -27,7 +27,7 @@ let result = ''
 
 for (let i = config.accountMinLength; i <= config.accountMaxLength; i++) {
     let price = accountPrice(i)
-    result += '<tr><th scope="row">'+i+'</th><td>'+thousandSeperator((price/100).toFixed(2))+' YNFT</td><td>'+thousandSeperator(price*config.vtPerBurn)+' VP</td><td>'+thousandSeperator(Math.floor(price*config.bwPerBurnHour))+' bytes/hour</td></tr>\n'
+    result += '<tr><th scope="row">'+i+'</th><td>'+thousandSeperator((price/1000000).toFixed(6))+' YNFT</td><td>'+thousandSeperator(Math.floor(price*config.vtPerBurn))+' VP</td><td>'+thousandSeperator(Math.floor(price*config.bwPerBurnHour))+' bytes/hour</td></tr>\n'
 }
 
 console.log(result)
