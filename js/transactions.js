@@ -355,9 +355,9 @@ const TransactionTypes = {
 }
 
 const tokens = {
-    GC: { decimals: 2 },
-    GCLocked: { decimals: 2 },
-    YNFT: { decimals: 2 }
+    GC: { decimals: 6 },
+    GCLocked: { decimals: 6 },
+    YNFT: { decimals: 6 }
 }
 
 function assetToString(amount, asset, excludeAsset = false) {
@@ -385,7 +385,7 @@ function txToHtml(tx) {
         case 2:
             return result + ' disapproved leader ' + aUser(tx.data.target)
         case 3:
-            result = result + ' transferred ' + thousandSeperator(tx.data.amount / 100) + ' YNFT to ' + aUser(tx.data.receiver)
+            result = result + ' transferred '+assetToString(tx.data.amount,'YNFT')+' to '+aUser(tx.data.receiver)
             if (tx.data.memo)
                 result += ', memo: ' + tx.data.memo
             return result
@@ -426,11 +426,11 @@ function txToHtml(tx) {
                 result += ', memo: ' + tx.data.memo
             return result
         case 16:
-            return result + ' created ' + tx.event.side + ' order on ' + aContent(tx.data.author+'/'+tx.data.link) + ' for ' + thousandSeperator(tx.data.price/100) + ' YNFT'
+            return result + ' created ' + tx.event.side + ' order on ' + aContent(tx.data.author+'/'+tx.data.link) + ' for '+assetToString(tx.data.price,'YNFT')
         case 17:
             return result + ' cancelled order for ' + aContent(tx.data.author+'/'+tx.data.link)
         case 18:
-            return result + ' market ' + tx.event.side + ' ' + aContent(tx.data.author+'/'+tx.data.link) + ' for ' + thousandSeperator(tx.event.price/100) + ' YNFT'
+            return result + ' market ' + tx.event.side + ' ' + aContent(tx.data.author+'/'+tx.data.link) + ' for '+assetToString(tx.data.price,'YNFT')
         case 21:
             return result + ' set signature thresholds'
         case 23:
@@ -450,15 +450,15 @@ function txToHtml(tx) {
         case 30:
             return result + ' revoked '+aUser(tx.data.user)+' with id '+tx.data.id
         case 31:
-            return result + ' created a fund request of ' + thousandSeperator(tx.data.requested/100) + ' YNFT with receiver ' + aUser(tx.data.receiver)
+            return result + ' created a fund request of '+assetToString(tx.data.requested,'YNFT')+' with receiver '+aUser(tx.data.receiver)
         case 32:
-            return result + ' contributed ' + thousandSeperator(tx.data.amount/100) + ' YNFT to fund request ID #' + tx.data.id
+            return result + ' contributed '+assetToString(tx.data.amount,'YNFT')+' to fund request ID #'+tx.data.id
         case 33:
             return result + ' submitted work for fund request ID #' + tx.data.id
         case 34:
             return result + (tx.data.approve ? ' approved' : ' disapproved') + ' work for fund request ID #' + tx.data.id + ' with memo ' + tx.data.memo
         case 35:
-            return result + (tx.data.amount > 0 ? ' approved' : ' disapproved') + ' proposal ID #' + tx.data.id + ' with vote weight of ' + thousandSeperator(Math.abs(tx.data.amount/100)) + ' YNFT'
+            return result + (tx.data.amount > 0 ? ' approved' : ' disapproved') + ' proposal ID #' + tx.data.id + ' with vote weight of '+assetToString(Math.abs(tx.data.amount),'YNFT')
         case 36:
             return result + ' edited proposal ID #' + tx.data.id
         case 37:
@@ -468,9 +468,9 @@ function txToHtml(tx) {
         case 39:
             return result + ' approved master DAO transaction #' + tx.data.id
         case 40:
-            return result + ' created an auction on ' + aContent(tx.data.author+'/'+tx.data.link) + ' with minimum bid of ' + thousandSeperator(tx.data.price/100) + ' YNFT'
+            return result + ' created an auction on ' + aContent(tx.data.author+'/'+tx.data.link) + ' with minimum bid of '+assetToString(tx.data.price,'YNFT')
         case 41:
-            return result + ' bid in an auction on ' + aContent(tx.data.author+'/'+tx.data.link) + ' with bid price of ' + thousandSeperator(tx.data.price/100) + ' YNFT'
+            return result + ' bid in an auction on ' + aContent(tx.data.author+'/'+tx.data.link) + ' with bid price of '+assetToString(tx.data.price,'YNFT')
         case 42:
             return result + ' created verify request'
         case 43:

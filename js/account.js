@@ -144,7 +144,7 @@ export default class extends view {
                 accCreatedStr += ' on '
                 accCreatedStr += new Date(acc.data.created.ts).toLocaleString()
             } else {
-                accCreatedStr += 'dtube on ' + new Date(1593350655283).toLocaleString() // timestamp of block #1 on testnet v2
+                accCreatedStr += 'null on ' + new Date(0).toLocaleString()
             }
             if (acc.data.ref)
                 accCreatedStr += ' with referrer ' + acc.data.ref
@@ -159,21 +159,6 @@ export default class extends view {
                 $('#acc-verifydata-json').html(jsonToTableRecursive(acc.data.verifyData))
             else
                 $('#acc-verifydata').hide()
-
-            axios.get(config.api+'/rewards/pending/' + this.account).then((pending) =>
-                $('#acc-meta-pending').text(thousandSeperator(Math.floor(pending.data.total) / 100) + ' YNFT'))
-            .catch(()=>
-                $('#acc-meta-pending').text('Error'))
-
-            axios.get(config.api+'/rewards/claimable/' + this.account).then((claimable) =>
-                $('#acc-meta-claimable').text(thousandSeperator(Math.floor(claimable.data.total) / 100) + ' YNFT'))
-            .catch(()=>
-                $('#acc-meta-claimable').text('Error'))
-    
-            axios.get(config.api + '/rewards/claimed/' + this.account).then((claimed) =>
-                $('#acc-meta-claimed').text(thousandSeperator(Math.floor(claimed.data.total) / 100) + ' YNFT'))
-            .catch(()=>
-                $('#acc-meta-claimed').text('Error'))
 
             axios.get(config.api + '/averages').then((avgs) => {
                 this.avgs = avgs.data
@@ -245,9 +230,9 @@ export default class extends view {
     }
 
     updateAccount(acc) {
-        $('#acc-meta-bal').text(thousandSeperator(acc.balance / 100) + ' YNFT')
-        $('#acc-meta-votelock').text(thousandSeperator(voteLocked(acc,new Date().getTime()) / 100) + ' YNFT')
-        $('#acc-meta-earninglock').text(thousandSeperator(acc.earningLock / 100) + ' YNFT')
+        $('#acc-meta-bal').text(assetToString(acc.balance,'YNFT'))
+        $('#acc-meta-votelock').text(assetToString(voteLocked(acc,new Date().getTime()),'YNFT'))
+        $('#acc-meta-earninglock').text(assetToString(acc.earningLock,'YNFT'))
         $('#acc-meta-bw').text(thousandSeperator(bandwidth(acc)) + ' bytes')
         $('#acc-meta-verifiedlvl').text(acc.verified || 0)
         $('#acc-meta-subs').text(thousandSeperator(acc.followers.length))
@@ -260,7 +245,7 @@ export default class extends view {
             this.updateLeaderStats()
             $('#acc-leader').show()
             $('#acc-leader-key').text(acc.pub_leader)
-            $('#acc-leader-appr').text(thousandSeperator(acc.node_appr / 100) + ' YNFT')
+            $('#acc-leader-appr').text(assetToString(acc.node_appr,'YNFT'))
     
             if (acc.json && acc.json.node && acc.json.node.ws)
                 $('#acc-leader-ws').text(DOMPurify.sanitize(acc.json.node.ws))

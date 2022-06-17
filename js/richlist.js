@@ -57,7 +57,7 @@ export default class extends view {
             for (let i = 0; i < richlist.data.length; i++) {
                 htmlresult += '<tr><th scope="row">' + (i+1) + '</th>'
                 htmlresult += '<td>' + richlist.data[i].name + '</td>'
-                htmlresult += '<td>' + thousandSeperator((richlist.data[i].balance / 100).toFixed(2)) + ' YNFT</td>'
+                htmlresult += '<td>' + assetToString(richlist.data[i].balance,'YNFT') + '</td>'
                 htmlresult += '<td>' + richlist.data[i].subs + '</td>'
                 htmlresult += '<td>' + richlist.data[i].subbed + '</td></tr>'
             }
@@ -82,10 +82,10 @@ export default class extends view {
             // second loop to display them
             for (let i = 0; i < dist.data.length; i++)
                 if (dist.data[i])
-                    $('#distribution-'+i).append('<td>'+thousandSeperator(dist.data[i].count)+'</td><td>'+roundDec(dist.data[i].count/totalAccounts*100,2)+'%</td><td>'+thousandSeperator(dist.data[i].sum/100)+' YNFT</td><td>'+roundDec(dist.data[i].sum/totalBalance*100,2)+'%</td>')
+                    $('#distribution-'+i).append('<td>'+thousandSeperator(dist.data[i].count)+'</td><td>'+roundDec(dist.data[i].count/totalAccounts*100,2)+'%</td><td>'+assetToString(dist.data[i].sum,'YNFT')+'</td><td>'+roundDec(dist.data[i].sum/totalBalance*100,2)+'%</td>')
                 else
                     $('#distribution-'+i).append('<td>0</td><td>0%</td><td>0 YNFT</td><td>0%</td>')
-            $('#distribution-total').append('<td><strong>'+thousandSeperator(totalAccounts)+'</strong></td><td><strong>100%</strong></td><td><strong>'+thousandSeperator(totalBalance/100)+' YNFT</strong></td><td><strong>100%</strong></td>')
+            $('#distribution-total').append('<td><strong>'+thousandSeperator(totalAccounts)+'</strong></td><td><strong>100%</strong></td><td><strong>'+assetToString(totalBalance,'YNFT')+'</strong></td><td><strong>100%</strong></td>')
 
             this.distLoaded = true
             this.display()

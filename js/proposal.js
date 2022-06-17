@@ -25,7 +25,7 @@ export default class extends view {
                             <h4 class="d-inline-block">Voting Results</h4>
                             <button type="button" class="btn btn-success float-right" id="prop-list-voters-btn">List Voters</button>
                             <div class="progress" id="prop-progressbar">
-                                <p class="gov-card-threshold-text" id="prop-threshold-text">Threshold:<br>${thousandSeperator(this.votingThreshold)} YNFT</p>
+                                <p class="gov-card-threshold-text" id="prop-threshold-text">Threshold:<br>${assetToString(this.votingThreshold,'YNFT')}</p>
                                 <div class="progress-bar-marker" role="progressbar" id="prop-threshold-marker"></div>
                                 <div class="progress-bar bg-success" role="progressbar" id="prop-bar-approves"></div>
                                 <div class="progress-bar bg-danger" role="progressbar" id="prop-bar-disapproves"></div>
@@ -117,17 +117,17 @@ export default class extends view {
             $('#prop-url').attr('href',prop.data.url)
             $('#prop-type').text(ProposalTypes[prop.data.type].name)
             $('#prop-status').text(ProposalTypes[prop.data.type].statuses[prop.data.status])
-            $('#prop-fee').text(thousandSeperator(prop.data.fee/100)+' YNFT')
-            $('#prop-appr').text(thousandSeperator(prop.data.approvals/100)+' YNFT')
-            $('#prop-disappr').text(thousandSeperator(prop.data.disapprovals/100)+' YNFT')
+            $('#prop-fee').text(assetToString(prop.data.fee,'YNFT'))
+            $('#prop-appr').text(assetToString(prop.data.approvals,'YNFT'))
+            $('#prop-disappr').text(assetToString(prop.data.disapprovals,'YNFT'))
             $('#prop-timetext').text(getTimeText(prop.data))
 
             switch (prop.data.type) {
                 case 1:
                     $('#prop-requested-row').removeClass('d-none')
                     $('#prop-raised-row').removeClass('d-none')
-                    $('#prop-requested').text(thousandSeperator(prop.data.requested/100)+' YNFT')
-                    $('#prop-raised').text(thousandSeperator(prop.data.raised/100)+' YNFT')
+                    $('#prop-requested').text(assetToString(prop.data.requested,'YNFT'))
+                    $('#prop-raised').text(assetToString(prop.data.raised,'YNFT'))
                     $('#prop-raised').append(` <a class="badge badge-success" id="prop-list-contrib-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-heart" viewBox="0 0 16 16">
                             <path d="M9 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-9 8c0 1 1 1 1 1h10s1 0 1-1-1-4-6-4-6 3-6 4Zm13.5-8.09c1.387-1.425 4.855 1.07 0 4.277-4.854-3.207-1.387-5.702 0-4.276Z"/>
@@ -193,7 +193,7 @@ export default class extends view {
 
             try {
                 this.votingThreshold = (await axios.get(config.api+'/config')).data.daoVotingThreshold
-                $('#prop-threshold-text').html('Threshold:<br>'+thousandSeperator((prop.data.threshold || this.votingThreshold)/100)+' YNFT')
+                $('#prop-threshold-text').html('Threshold:<br>'+assetToString(prop.data.threshold || this.votingThreshold,'YNFT'))
             } catch {}
 
             this.drawVotingProgress(prop.data)
@@ -208,7 +208,7 @@ export default class extends view {
                     for (let i in votes.data) {
                         votersTbody += '<tr>'
                         votersTbody += '<td>'+DOMPurify.sanitize(votes.data[i].voter)+'</td>'
-                        votersTbody += '<td>'+thousandSeperator(votes.data[i].amount/100)+' YNFT</td>'
+                        votersTbody += '<td>'+assetToString(votes.data[i].amount,'YNFT')+'</td>'
                         votersTbody += '<td>'+(!votes.data[i].veto).toString()+'</td>'
                         votersTbody += '</tr>'
                     }
@@ -226,7 +226,7 @@ export default class extends view {
                 $('#prop-list-contrib-btn').on('click',() => {
                     let contribTbody = ''
                     for (let c in prop.data.contrib)
-                        contribTbody += '<tr><td>'+DOMPurify.sanitize(c)+'</td><td>'+thousandSeperator(prop.data.contrib[c]/100)+' YNFT</td></tr>'
+                        contribTbody += '<tr><td>'+DOMPurify.sanitize(c)+'</td><td>'+assetToString(prop.data.contrib[c],'YNFT')+'</td></tr>'
                     $('#prop-contribs-tbody').html(contribTbody)
                     $('#prop-list-contribs-modal').modal()
                 })
