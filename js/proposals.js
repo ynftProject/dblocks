@@ -60,8 +60,11 @@ const ChainParams = [
     'earningLockNftPremium',
     'distPoolCycle',
     'ammFee',
+    'verifiers',
 
     // dao
+    'daoMembers',
+    'daoMembersMax',
     'daoVotingPeriodSeconds',
     'daoVotingThreshold',
     'chainUpdateFee',
